@@ -1,23 +1,16 @@
-pattern="GCAAATCCTCGCTGTAGTGTCTGG";
+def SymbolToNumber(slovo):
+  if slovo=="A":
+    return 0
+  elif slovo=="C":
+    return 1
+  elif slovo=="G":
+    return 2
+  else: #T
+    return 3
 
-def SymbolToNumber(simbol):
-  if simbol=="A":
-    simbol=0
-  if simbol=="C":
-    simbol=1
-  if simbol=="G":
-    simbol=2
-  if simbol=="T":
-    simbol=3
-  return simbol
-
-
-def Rekurzija(pattern):
+def PatternToNumber(pattern):
   if len(pattern)==0:
     return 0
-  while len(pattern)>0:
-    symbol=pattern[-1]
-    prefix=pattern[-len(pattern):-1]
-    return 4*Rekurzija(prefix)+SymbolToNumber(symbol)
-
-print (Rekurzija(pattern))
+  simbol=pattern[-1] #zadnje slovo
+  prefix=pattern[:-1] #sve do zadnjeg slova
+  return 4*PatternToNumber(prefix)+SymbolToNumber(simbol)
