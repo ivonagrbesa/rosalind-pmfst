@@ -20,4 +20,4 @@ def Rekurzija(pattern):
     prefix=pattern[-len(pattern):-1]
     return 4*Rekurzija(prefix)+SymbolToNumber(symbol)
 
-print (Rekurzija(pattern));
+print (Rekurzija(pattern))
