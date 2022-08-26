@@ -30,3 +30,6 @@ def EulerianCycle(D):
           break
   
   return ciklus
+
+#c=EulerianCycle(G)
+#rj="->".join(c)
