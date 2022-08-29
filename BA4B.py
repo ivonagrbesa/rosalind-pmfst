@@ -91,6 +91,17 @@ def Rna(dna):
       rna+=slovo
   return rna
 
+def Translate(rna):
+  rj=""
+  for i in range(0, len(rna), 3):
+    trimer=rna[i:i+3]
+    slovo=D[trimer]
+    if slovo=="*":
+      break
+    else:
+      rj+=slovo
+  return rj
+
 def FindSubstrings(dna, peptide):
   podstringovi=[]
   p=len(peptide)
