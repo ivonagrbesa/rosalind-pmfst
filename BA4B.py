@@ -69,52 +69,39 @@ def get_genetic_code_codons():
     return genetic_code
   
   
-  def ReverseComplement(dna):
-  rc=""
-  for i in range(0, len(dna)):
+def RC(dna):
+  rj=""
+  for i in range(len(dna)):
     if dna[i]=="A":
-      rc+="T"
+      rj+="T"
     elif dna[i]=="C":
-      rc+="G"
+      rj+="G"
     elif dna[i]=="G":
-      rc+="C"
+      rj+="C"
     elif dna[i]=="T":
-      rc+="A"
-  rc=rc[::-1]
-  return rc
+      rj+="A"
+  return rj[::-1]
 
-
-def DnaToRna(dna):
+def Rna(dna):
   rna=""
-  for i in range(0, len(dna)):
-    if dna[i]=="T":
+  for slovo in dna:
+    if slovo=="T":
       rna+="U"
     else:
-      rna+=dna[i]
+      rna+=slovo
   return rna
 
-
-def ProteinTranslation(rna): #prevodi rna u niz aminokiselina
-  peptide=[]
-  kodoni=get_genetic_code_codons() #dict
-  for i in range(0, len(rna), 3):
-    slovo=kodoni[rna[i:i+3]]
-    if slovo=="*":
-      break
-    peptide.append(slovo)
-  rj="".join(peptide)
-  return rj
-
-
-def PeptideEncoding(dna, peptide):
+def FindSubstrings(dna, peptide):
   podstringovi=[]
-  p=len(peptide) #komad dna koji kodira taj peptid je onda dug 3*p
-  for i in range(0, len(dna)-(3*p)-1):
-    isjecak=dna[i:i+(3*p)]
-    isjecak_rc=ReverseComplement(dna[i:i+(3*p)])
-    rna=DnaToRna(isjecak)
-    rna_rc=DnaToRna(isjecak_rc)
-    if (ProteinTranslation(rna)==peptide or ProteinTranslation(rna_rc)==peptide):
+  p=len(peptide)
+  k=3*p #podstr koji su rjesenja su duljine k
+
+  for i in range(0, len(dna)-k+1):
+    isjecak=dna[i:i+k]
+    isjecak_rc=RC(isjecak)
+    rna=Rna(isjecak)
+    rna_rc=Rna(isjecak_rc)
+    if (Translate(rna)==peptide or Translate(rna_rc)==peptide):
       podstringovi.append(isjecak)
-  for rj in podstringovi:
-    print (rj)
+  for p in podstringovi:
+    print(p)  
