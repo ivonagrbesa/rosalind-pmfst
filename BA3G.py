@@ -1,15 +1,11 @@
 graf=''''''
-
 def NapraviDict(graf):
   D=dict()
   graf=graf.split("\n")
-  for el in graf:
-    kljuc, vrij=el.split(" -> ")
-    vrij=vrij.split(",")
-    D[kljuc]=vrij
+  for linija in graf:
+    kljuc, vrij = linija.split(" -> ")
+    D[kljuc]=vrij.split(",")
   return D
-
-G=NapraviDict(graf)
 
 def EulerianCycle(D):
   pocetni=list(D.keys())[0]
@@ -36,39 +32,30 @@ def EulerianCycle(D):
 
 
 from collections import Counter
+def AddImaginaryEdge(D):
+  ulazni=Counter()
+  izlazni=Counter()
 
-def Izbalansiraj(graph): 
-  graph=graph.copy() #kopiramo graf jer cemo morat usporedit s onim sta je bilo na pocetku
-  izlazni={k: len(graph[k]) for k in graph.keys()}
-  ulazni_list=[]
-  for v in graph.values():
-    ulazni_list.extend(v)
-  ulazni=Counter(ulazni_list)
-
-  svicvorovi=set(list(izlazni.keys())+list(ulazni.keys()))
-
-  for cvor in svicvorovi:
-    balance=izlazni.get(cvor, 0)-ulazni.get(cvor, 0)
-    if balance==1: #to je pocetak puta, odn kraj novog brida
-      second=cvor
-    if balance==-1: #to je kraj puta, odn pocetak novog dodanog brida
-      first=cvor
-    
-  if first not in graph:
-    graph[first]=[second]
-  else:
-    graph[first].append(second)
+  for key, value in D.items():
+    izlazni[key]+=len(value)
+    for v in value: 
+      ulazni[v]+=1
   
-  return graph, first, second #vraca balansirani graf i nebalansirane cvorove koje smo sad spojili
+  start=list(ulazni-izlazni)[0]
+  end=list(izlazni-ulazni)[0]
+
+  D[start]=[end]
+  return start, end
 
 
-
-g, first, second=Izbalansiraj(G) # u izbalansiranom grafu moze se pronaci E.ciklus
-ciklus=EulerianCycle(g)[:-1]
-
-for i in range(len(ciklus)):
-  if ciklus[i]==first and ciklus[(i+1)%len(ciklus)]==second: # vrhovi izmedu kojih je povucen novi brid
-    rj=ciklus[i+1:] + ciklus[:i+1] #poceli bi vrhom second(pocetak puta) i zavrsili sa first(kraj puta)
-
+def EulerianPath(D):
+  start, end=AddImaginaryEdge(D)
+  ciklus=EulerianCycle(D, end)[1:]
+  
+  for i in range(len(ciklus)):
+    if ciklus[i]==start and ciklus[i+1]==end:
+      return ciklus[i+1:]+ciklus[:i+1]
+    
+    
 # rj je E.put
 print("->".join(rj))
